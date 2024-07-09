@@ -1,0 +1,114 @@
+﻿/// <summary>
+///     Handler class for the <c>DmfEntityWriter</c> class.
+/// </summary>
+// CUS, UserStory_0985_IDD001 Task_3211_ProductsToNavPad, 01.11.2023, akhottchenkov.N
+final class DREDMFEntityWriterClsHandler
+{
+    /// <summary>
+    ///     Event handler pre- for the <c>DmfEntityWriter</c>, writeToStaging method.
+    ///     Triggers data entity static public void preDMFExportToStaging method if exists.
+    /// </summary>
+    /// <param name="_args">
+    ///     Object of type <c>XppPrePostArgs</c>.
+    /// </param>
+    /// <remarks>
+    ///     public static void preDMFExportToStaging(DMFDefinitionGroupName _definitionGroup,
+    ///                                              DMFExecutionId         _executionId,
+    ///                                              DMFEntity              _entity,
+    ///                                              RefRecId               _startRefRecId,
+    ///                                              RefRecId               _endRefRecId,
+    ///                                              boolean                _compareData,
+    ///                                              Timezone               _timezone)
+    /// </remarks>
+    [PreHandlerFor(classStr(DmfEntityWriter), staticMethodStr(DmfEntityWriter, writeToStaging))]
+    public static void DmfEntityWriter_Pre_writeToStaging(XppPrePostArgs _args)
+    {
+        DMFDefinitionGroupName  definitionGroup = _args.getArg('_definitionGroup');
+        DMFExecutionId          executionId     = _args.getArg('_executionId');
+        DMFEntity               entity          = _args.getArg('entity');
+        RefRecId                startRefRecId   = _args.getArg('_startRefRecId');
+        RefRecId                endRefRecId     = _args.getArg('_endRefRecId');
+        boolean                 compareData     = _args.getArg('_compareData');
+        Timezone                timezone        = _args.getArg('_timezone');
+
+        if (entity.TargetEntity  != '')
+        {
+            TableId     tableId = tableName2Id(entity.TargetEntity);
+
+            if (tableId > 0)
+            {
+                DictDataEntity  dictDe  = new DictDataEntity(tableId);
+                DictMethod  dictMethod  = new DictMethod(UtilElementType::TableStaticMethod, tableId, 'preDMFExportToStaging');
+
+                if (dictDe                      != null &&
+                    dictMethod                  != null &&
+                    dictMethod.compiledOk()     == true &&
+                    dictMethod.isStatic()       == true &&
+                    dictMethod.parameterCnt()   == 7)
+                {
+                    dictDe.callStatic(dictMethod.name(), definitionGroup, executionId, entity, startRefRecId, endRefRecId, compareData, timezone);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Event handler post- for the <c>DmfEntityWriter</c>, writeToStaging method.
+    ///     Triggers data entity static public void postDMFExportToStaging method if exists.
+    /// </summary>
+    /// <param name="_args">
+    ///     Object of type <c>XppPrePostArgs</c>.
+    /// </param>
+    /// <remarks>
+    ///     public static container postDMFExportToStaging(DMFDefinitionGroupName   _definitionGroup,
+    ///                                                    DMFExecutionId           _executionId,
+    ///                                                    DMFEntity                _entity,
+    ///                                                    RefRecId                 _startRefRecId,
+    ///                                                    RefRecId                 _endRefRecId,
+    ///                                                    boolean                  _compareData,
+    ///                                                    Timezone                 _timezone,
+    ///                                                    container                _returnValue)
+    ///     if the return value is other than conNull(), it overrides the value of the original method.
+    /// </remarks>
+    // CUS, UserStory_00717_IDD027, Task_3191_ParagonDeliverySlots, 24.08.2023, akhottchenkov.N
+    [PostHandlerFor(classStr(DmfEntityWriter), staticMethodStr(DmfEntityWriter, writeToStaging))]
+    public static void DmfEntityWriter_Post_writeToStaging(XppPrePostArgs _args)
+    {
+        DMFDefinitionGroupName  definitionGroup = _args.getArg('_definitionGroup');
+        DMFExecutionId          executionId     = _args.getArg('_executionId');
+        DMFEntity               entity          = _args.getArg('entity');
+        RefRecId                startRefRecId   = _args.getArg('_startRefRecId');
+        RefRecId                endRefRecId     = _args.getArg('_endRefRecId');
+        boolean                 compareData     = _args.getArg('_compareData');
+        Timezone                timezone        = _args.getArg('_timezone');
+        container               returnValue     = _args.getReturnValue();
+        container               returnValueNew;
+
+        if (entity.TargetEntity  != '')
+        {
+            TableId     tableId = tableName2Id(entity.TargetEntity);
+
+            if (tableId > 0)
+            {
+                DictDataEntity  dictDe  = new DictDataEntity(tableId);
+                DictMethod  dictMethod  = new DictMethod(UtilElementType::TableStaticMethod, tableId, 'postDMFExportToStaging');
+
+                if (dictDe                      != null &&
+                    dictMethod                  != null &&
+                    dictMethod.compiledOk()     == true &&
+                    dictMethod.isStatic()       == true &&
+                    dictMethod.returnType()     == Types::Container &&
+                    dictMethod.parameterCnt()   == 8)
+                {
+                    returnValueNew = dictDe.callStatic(dictMethod.name(), definitionGroup, executionId, entity, startRefRecId, endRefRecId, compareData, timezone, returnValue);
+
+                    if (returnValueNew != conNull())
+                    {
+                        _args.setReturnValue(returnValueNew);
+                    }
+                }
+            }
+        }
+    }
+
+}
