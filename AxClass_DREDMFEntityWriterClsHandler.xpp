@@ -1,7 +1,6 @@
 ﻿/// <summary>
 ///     Handler class for the <c>DmfEntityWriter</c> class.
 /// </summary>
-// CUS, UserStory_0985_IDD001 Task_3211_ProductsToNavPad, 01.11.2023, akhottchenkov.N
 final class DREDMFEntityWriterClsHandler
 {
     /// <summary>
@@ -70,7 +69,6 @@ final class DREDMFEntityWriterClsHandler
     ///                                                    container                _returnValue)
     ///     if the return value is other than conNull(), it overrides the value of the original method.
     /// </remarks>
-    // CUS, UserStory_00717_IDD027, Task_3191_ParagonDeliverySlots, 24.08.2023, akhottchenkov.N
     [PostHandlerFor(classStr(DmfEntityWriter), staticMethodStr(DmfEntityWriter, writeToStaging))]
     public static void DmfEntityWriter_Post_writeToStaging(XppPrePostArgs _args)
     {
